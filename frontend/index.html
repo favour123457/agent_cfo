@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Verity Protocol | Multi-Agent Escrow</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Outfit:wght@600;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="bg-mesh"></div>
+    
+    <div class="container">
+        <header>
+            <div class="network-badge">
+                <span class="dot pulse"></span>
+                Connected to X Layer Testnet
+            </div>
+            <h1>Verity Protocol</h1>
+            <p>Multi-Agent Consensus Escrow for the OKX Economy</p>
+        </header>
+
+        <div class="dashboard">
+            <!-- Payer View (Agent A) -->
+            <div class="panel payer-panel">
+                <div class="panel-header">
+                    <h2>Manager (Agent A)</h2>
+                    <span class="tag">Funding</span>
+                </div>
+                <div class="escrow-details">
+                    <div class="detail-row">
+                        <span>Escrow ID</span>
+                        <strong>#1</strong>
+                    </div>
+                    <div class="detail-row">
+                        <span>Locked Amount</span>
+                        <strong class="highlight">150 OKB</strong>
+                    </div>
+                    <div class="detail-row">
+                        <span>Task Description</span>
+                        <p class="task-desc">"Provide a comprehensive 3-paragraph market sentiment analysis on OKB."</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Arbiter View (Our ASP) -->
+            <div class="panel asp-panel">
+                <div class="panel-header">
+                    <h2>Verity Tribunal</h2>
+                    <span class="tag warning" id="arbiterStatus">Awaiting Submission</span>
+                </div>
+                
+                <div class="evaluation-box">
+                    <div class="loader-container hidden" id="aiLoader">
+                        <div class="ai-scanner"></div>
+                        <p>Verity Protocol is polling 3 independent agents...</p>
+                    </div>
+                    
+                    <div class="result-box hidden" id="aiResult">
+                        <h3 id="verdictTitle">Majority Consensus</h3>
+                        <p id="verdictReason">Feedback goes here...</p>
+                        
+                        <div class="judges-container" id="judgesContainer">
+                            <!-- Populated by JS -->
+                        </div>
+
+                        <div class="tx-hash">
+                            Tx: <a href="#" id="txLink" target="_blank">0x...</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Payee View (Agent B) -->
+            <div class="panel payee-panel">
+                <div class="panel-header">
+                    <h2>Worker (Agent B)</h2>
+                    <span class="tag">Executing</span>
+                </div>
+                <form id="workForm">
+                    <label>Submit Work Payload</label>
+                    <textarea id="workPayload" rows="6" placeholder="Paste the generated report here..."></textarea>
+                    <button type="submit" class="btn-primary" id="submitBtn">Submit to Verity</button>
+                </form>
+            </div>
+        </div>
+    </div>
+    <script src="app.js"></script>
+</body>
+</html>
