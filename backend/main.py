@@ -29,12 +29,12 @@ w3 = Web3(Web3.HTTPProvider("https://testrpc.xlayer.tech"))
 w3.middleware_onion.inject(ExtraDataToPOAMiddleware, layer=0)
 
 private_key = os.getenv("ASP_PRIVATE_KEY")
-gemini_api_key = os.getenv("GEMINI_API_KEY")
+openrouter_api_key = os.getenv("OPENROUTER_API_KEY")
 
 openai_client = AsyncOpenAI(
-    api_key=gemini_api_key,
-    base_url="https://generativelanguage.googleapis.com/v1beta/openai/"
-) if gemini_api_key else None
+    api_key=openrouter_api_key,
+    base_url="https://openrouter.ai/api/v1"
+) if openrouter_api_key else None
 contract_address = os.getenv("CONTRACT_ADDRESS")
 
 escrow_abi = [
@@ -84,7 +84,7 @@ class EvaluationResult(BaseModel):
 
 # ----------------- Core Logic -----------------
 async def _process_submission(escrow_id: int, worker_address: str, work_payload: str) -> dict:
-    if not private_key or not contract_address or not os.getenv("GEMINI_API_KEY"):
+    if not private_key or not contract_address or not os.getenv("OPENROUTER_API_KEY"):
         raise Exception("Backend not fully configured (missing keys or contract address).")
 
     contract = w3.eth.contract(address=contract_address, abi=escrow_abi)
@@ -114,7 +114,7 @@ async def _process_submission(escrow_id: int, worker_address: str, work_payload:
         """
         try:
             response = await openai_client.chat.completions.create(
-                model="gemini-1.5-flash",
+                model="nousresearch/hermes-3-llama-3.1-405b:free",
                 messages=[{"role": "user", "content": prompt}],
                 response_format={ "type": "json_object" }
             )
