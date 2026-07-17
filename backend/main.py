@@ -134,7 +134,10 @@ async def _process_submission(escrow_id: int, worker_address: str, work_payload:
     ]
 
     try:
-        judges_results = await asyncio.gather(*(evaluate_with_role(name, instr) for name, instr in roles))
+        judges_results = []
+        for name, instr in roles:
+            judges_results.append(await evaluate_with_role(name, instr))
+            await asyncio.sleep(2) # Prevent Gemini Free Tier 429 Rate Limit
     except Exception as e:
         raise Exception(f"Consensus evaluation failed: {str(e)}")
 
