@@ -114,7 +114,7 @@ async def _process_submission(escrow_id: int, worker_address: str, work_payload:
         """
         try:
             response = await openai_client.chat.completions.create(
-                model="nousresearch/hermes-3-llama-3.1-405b:free",
+                model="meta-llama/llama-3.1-8b-instruct:free",
                 messages=[{"role": "user", "content": prompt}],
                 response_format={ "type": "json_object" }
             )
