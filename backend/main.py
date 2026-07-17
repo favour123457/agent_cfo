@@ -115,7 +115,7 @@ async def _process_submission(escrow_id: int, worker_address: str, work_payload:
         try:
             response = await openai_client.chat.completions.create(
                 model="gemini-1.5-flash",
-                messages=[{"role": "system", "content": prompt}],
+                messages=[{"role": "user", "content": prompt}],
                 response_format={ "type": "json_object" }
             )
             result = json.loads(response.choices[0].message.content)
