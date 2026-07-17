@@ -110,7 +110,7 @@ async def _process_submission(escrow_id: int, worker_address: str, work_payload:
         "feedback": string (a short 1-sentence reason focusing ONLY on your specific role's criteria)
         """
         try:
-            model = genai.GenerativeModel('gemini-1.5-flash', generation_config={"response_mime_type": "application/json"})
+            model = genai.GenerativeModel('gemini-1.5-flash-latest', generation_config={"response_mime_type": "application/json"})
             response = await model.generate_content_async(prompt)
             result = json.loads(response.text)
             return JudgeVote(
