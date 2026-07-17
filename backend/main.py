@@ -2,7 +2,7 @@ import os
 import json
 import asyncio
 from dotenv import load_dotenv
-from openai import AsyncOpenAI
+import google.generativeai as genai
 from fastapi import FastAPI, HTTPException, Request
 from fastapi.middleware.cors import CORSMiddleware
 from starlette.responses import Response
@@ -29,7 +29,9 @@ w3 = Web3(Web3.HTTPProvider("https://testrpc.xlayer.tech"))
 w3.middleware_onion.inject(ExtraDataToPOAMiddleware, layer=0)
 
 private_key = os.getenv("ASP_PRIVATE_KEY")
-openai_client = AsyncOpenAI(api_key=os.getenv("OPENAI_API_KEY")) if os.getenv("OPENAI_API_KEY") and os.getenv("OPENAI_API_KEY") != "your_openai_api_key_here" else None
+gemini_api_key = os.getenv("GEMINI_API_KEY")
+if gemini_api_key:
+    genai.configure(api_key=gemini_api_key)
 contract_address = os.getenv("CONTRACT_ADDRESS")
 
 escrow_abi = [
@@ -79,7 +81,7 @@ class EvaluationResult(BaseModel):
 
 # ----------------- Core Logic -----------------
 async def _process_submission(escrow_id: int, worker_address: str, work_payload: str) -> dict:
-    if not private_key or not contract_address or not openai_client:
+    if not private_key or not contract_address or not os.getenv("GEMINI_API_KEY"):
         raise Exception("Backend not fully configured (missing keys or contract address).")
 
     contract = w3.eth.contract(address=contract_address, abi=escrow_abi)
@@ -108,12 +110,9 @@ async def _process_submission(escrow_id: int, worker_address: str, work_payload:
         "feedback": string (a short 1-sentence reason focusing ONLY on your specific role's criteria)
         """
         try:
-            response = await openai_client.chat.completions.create(
-                model="gpt-4o",
-                messages=[{"role": "system", "content": prompt}],
-                response_format={ "type": "json_object" }
-            )
-            result = json.loads(response.choices[0].message.content)
+            model = genai.GenerativeModel('gemini-1.5-flash', generation_config={"response_mime_type": "application/json"})
+            response = await model.generate_content_async(prompt)
+            result = json.loads(response.text)
             return JudgeVote(
                 judge_name=role_name,
                 approved=result.get("approved", False),
