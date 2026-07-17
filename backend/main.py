@@ -2,7 +2,7 @@ import os
 import json
 import asyncio
 from dotenv import load_dotenv
-import google.generativeai as genai
+from openai import AsyncOpenAI
 from fastapi import FastAPI, HTTPException, Request
 from fastapi.middleware.cors import CORSMiddleware
 from starlette.responses import Response
@@ -30,8 +30,11 @@ w3.middleware_onion.inject(ExtraDataToPOAMiddleware, layer=0)
 
 private_key = os.getenv("ASP_PRIVATE_KEY")
 gemini_api_key = os.getenv("GEMINI_API_KEY")
-if gemini_api_key:
-    genai.configure(api_key=gemini_api_key)
+
+openai_client = AsyncOpenAI(
+    api_key=gemini_api_key,
+    base_url="https://generativelanguage.googleapis.com/v1beta/openai/"
+) if gemini_api_key else None
 contract_address = os.getenv("CONTRACT_ADDRESS")
 
 escrow_abi = [
@@ -110,9 +113,12 @@ async def _process_submission(escrow_id: int, worker_address: str, work_payload:
         "feedback": string (a short 1-sentence reason focusing ONLY on your specific role's criteria)
         """
         try:
-            model = genai.GenerativeModel('gemini-1.5-flash-latest', generation_config={"response_mime_type": "application/json"})
-            response = await model.generate_content_async(prompt)
-            result = json.loads(response.text)
+            response = await openai_client.chat.completions.create(
+                model="gemini-1.5-flash",
+                messages=[{"role": "system", "content": prompt}],
+                response_format={ "type": "json_object" }
+            )
+            result = json.loads(response.choices[0].message.content)
             return JudgeVote(
                 judge_name=role_name,
                 approved=result.get("approved", False),
