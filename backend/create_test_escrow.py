@@ -23,6 +23,13 @@ escrow_abi = [
         "outputs": [{"internalType": "uint256", "name": "", "type": "uint256"}],
         "stateMutability": "payable",
         "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "nextEscrowId",
+        "outputs": [{"internalType": "uint256", "name": "", "type": "uint256"}],
+        "stateMutability": "view",
+        "type": "function"
     }
 ]
 
@@ -35,7 +42,7 @@ def create_escrow():
     # We set ourselves as the payer, arbiter, and a dummy address as payee just for this test
     payee = "0x0000000000000000000000000000000000000B0b"
     arbiter = acct.address
-    task_desc = "Provide a comprehensive 3-paragraph market sentiment analysis on OKB."
+    task_desc = "Fetch https://api.coingecko.com/api/v3/simple/price?ids=okb&vs_currencies=usd and report the current USD price of OKB."
     amount = w3.to_wei(0.0001, 'ether') # 0.0001 OKB
     
     tx = contract.functions.createEscrow(payee, arbiter, task_desc).build_transaction({
@@ -51,7 +58,8 @@ def create_escrow():
     print(f"Transaction sent! Hash: {tx_hash.hex()}")
     receipt = w3.eth.wait_for_transaction_receipt(tx_hash)
     print(f"Transaction confirmed in block {receipt.blockNumber}")
-    print("Test Escrow ID 0 created successfully!")
+    current_id = contract.functions.nextEscrowId().call() - 1
+    print(f"Test Escrow ID {current_id} created successfully!")
 
 if __name__ == "__main__":
     create_escrow()

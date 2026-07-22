@@ -1,15 +1,19 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Verity Protocol | Multi-Agent Escrow</title>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Outfit:wght@600;800&display=swap" rel="stylesheet">
+    <title>Verity Protocol | Verified Live-Data Feed Escrow</title>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Outfit:wght@600;800&display=swap"
+        rel="stylesheet">
     <link rel="stylesheet" href="style.css">
 </head>
+
 <body>
     <div class="bg-mesh"></div>
-    
+
     <div class="container">
         <header>
             <div class="network-badge">
@@ -17,28 +21,28 @@
                 Connected to X Layer Testnet
             </div>
             <h1>Verity Protocol</h1>
-            <p>Multi-Agent Consensus Escrow for the OKX Economy</p>
+            <p>Verified Live-Data Feed Escrow for AI Agents</p>
         </header>
 
         <div class="dashboard">
             <!-- Payer View (Agent A) -->
             <div class="panel payer-panel">
                 <div class="panel-header">
-                    <h2>Manager (Agent A)</h2>
+                    <h2>Requester Agent</h2>
                     <span class="tag">Funding</span>
                 </div>
                 <div class="escrow-details">
                     <div class="detail-row">
                         <span>Escrow ID</span>
-                        <strong>#1</strong>
+                        <input type="number" id="escrowIdInput" value="" style="width: 50px; background: #1a1a1a; color: white; border: 1px solid #444; border-radius: 4px; padding: 2px 6px; font-weight: bold;">
                     </div>
                     <div class="detail-row">
                         <span>Locked Amount</span>
-                        <strong class="highlight">150 OKB</strong>
+                        <strong class="highlight" id="lockedAmount">Loading...</strong>
                     </div>
                     <div class="detail-row">
-                        <span>Task Description</span>
-                        <p class="task-desc">"Provide a comprehensive 3-paragraph market sentiment analysis on OKB."</p>
+                        <span>Data Request</span>
+                        <p class="task-desc" id="taskDescDisplay">Looking for the latest active escrow on X Layer...</p>
                     </div>
                 </div>
             </div>
@@ -49,17 +53,19 @@
                     <h2>Verity Tribunal</h2>
                     <span class="tag warning" id="arbiterStatus">Awaiting Submission</span>
                 </div>
-                
+
                 <div class="evaluation-box">
                     <div class="loader-container hidden" id="aiLoader">
                         <div class="ai-scanner"></div>
-                        <p>Verity Protocol is polling 3 independent agents...</p>
+                        <p>Fetching live data and polling 3 independent judges...</p>
                     </div>
-                    
+
                     <div class="result-box hidden" id="aiResult">
                         <h3 id="verdictTitle">Majority Consensus</h3>
                         <p id="verdictReason">Feedback goes here...</p>
-                        
+
+                        <p class="task-desc" id="scrapedPreview" style="max-height: 160px; overflow-y: auto;"></p>
+
                         <div class="judges-container" id="judgesContainer">
                             <!-- Populated by JS -->
                         </div>
@@ -74,17 +80,19 @@
             <!-- Payee View (Agent B) -->
             <div class="panel payee-panel">
                 <div class="panel-header">
-                    <h2>Worker (Agent B)</h2>
+                    <h2>Data Provider Agent</h2>
                     <span class="tag">Executing</span>
                 </div>
+                <p style="color: var(--text-muted); font-size: 0.9rem; margin-bottom: 1.5rem; line-height: 1.5;">
+                    Reads the target URL straight out of the escrow's data request, fetches it live, and submits the result to the tribunal for verification. No manual input needed.
+                </p>
                 <form id="workForm">
-                    <label>Submit Work Payload</label>
-                    <textarea id="workPayload" rows="6" placeholder="Paste the generated report here..."></textarea>
-                    <button type="submit" class="btn-primary" id="submitBtn">Submit to Verity</button>
+                    <button type="submit" class="btn-primary" id="submitBtn" disabled>Loading...</button>
                 </form>
             </div>
         </div>
     </div>
     <script src="app.js"></script>
 </body>
+
 </html>
