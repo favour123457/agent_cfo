@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>OKX AI ASP | Deep-Dive Scraper</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Outfit:wght@500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    <!-- Prism for syntax highlighting -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css" rel="stylesheet" />
+</head>
+<body>
+    <div class="background-effects">
+        <div class="glow-orb orb-1"></div>
+        <div class="glow-orb orb-2"></div>
+    </div>
+
+    <main class="container">
+        <header>
+            <div class="badge">ASP STATUS: ACTIVE</div>
+            <h1>Deep-Dive Web Scraper</h1>
+            <p>An AI Agent Service Provider built for the OKX Agent Economy. Bypass captchas and extract clean, token-efficient data from modern SPAs.</p>
+        </header>
+
+        <section class="scraper-card glass-panel">
+            <form id="scrapeForm">
+                <div class="input-group">
+                    <label for="urlInput">Target URL</label>
+                    <input type="url" id="urlInput" placeholder="https://example.com" required>
+                </div>
+                
+                <div class="controls-group">
+                    <div class="toggle-container">
+                        <input type="checkbox" id="markdownToggle" checked>
+                        <label for="markdownToggle">Extract as Markdown</label>
+                    </div>
+                    
+                    <button type="submit" id="submitBtn" class="primary-btn">
+                        <span class="btn-text">Extract Data</span>
+                        <div class="loader hidden" id="btnLoader"></div>
+                    </button>
+                </div>
+            </form>
+        </section>
+
+        <section class="results-container hidden" id="resultsSection">
+            <div class="results-header">
+                <h2>Extracted Content</h2>
+                <div class="meta-data">
+                    <span id="pageTitle" class="tag"></span>
+                    <button class="icon-btn" id="copyBtn" title="Copy to clipboard">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
+                    </button>
+                </div>
+            </div>
+            
+            <div class="code-window">
+                <div class="window-controls">
+                    <div class="dot close"></div>
+                    <div class="dot minimize"></div>
+                    <div class="dot expand"></div>
+                </div>
+                <pre><code id="outputCode" class="language-markdown"></code></pre>
+            </div>
+        </section>
+    </main>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-markdown.min.js"></script>
+    <script src="app.js"></script>
+</body>
+</html>

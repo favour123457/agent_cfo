@@ -1,0 +1,6 @@
+fastapi
+uvicorn
+playwright
+pydantic
+beautifulsoup4
+markdownify
